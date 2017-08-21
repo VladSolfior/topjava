@@ -7,11 +7,13 @@
 <head>
     <title>Meals</title>
     <style>
-        ."exceeded" {
-        color:red;
+        <%--no impotrant that its not colored its working normal!!! Styles--%>
+        .normal {
+            color: green;
         }
-        ."normal" {
-        color:black;
+
+        .exceeded {
+            color: red;
         }
     </style>
 </head>
