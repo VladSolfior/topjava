@@ -2,6 +2,7 @@ package ru.javawebinar.topjava.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.repository.mock.InMemoryMealRepositoryImpl;
@@ -59,6 +60,7 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public void delete(int id, int userId) throws NotFoundException {
+        checkOwner(userId);
         if (repository.get(id, userId) == null) {
             throw new NotFoundException("Meal with id: " + id + " not exist");
         }
@@ -67,6 +69,7 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public Meal get(int id, int userId) throws NotFoundException {
+        checkOwner(userId);
         if (repository.get(id, userId) == null) {
             throw new NotFoundException("Meal with id: " + id + " not exist");
         }
@@ -75,11 +78,13 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public List<Meal> getBetweenDateTimes(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
+        checkOwner(userId);
         return repository.getBetween(startDateTime, endDateTime, userId);
     }
 
     @Override
     public Meal update(Meal meal, int userId) throws NotFoundException {
+        checkOwner(userId);
         if (repository.get(meal.getId(), userId) == null) {
             throw new NotFoundException("Meal with id: " + meal.getId() + "not exist");
         }
@@ -89,6 +94,13 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public List<Meal> getAll(int userId) {
+        checkOwner(userId);
         return repository.getAll(userId).stream().collect(Collectors.toList());
+    }
+
+    private void checkOwner(int userId) {
+        if (userId != AuthorizedUser.id()) {
+            throw new NotFoundException("user is not owner of Meal");
+        }
     }
 }
