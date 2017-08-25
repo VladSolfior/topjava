@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.NamedEntity;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
+import ru.javawebinar.topjava.util.ValidationUtil;
 
 import java.util.Comparator;
 import java.util.List;
@@ -30,12 +31,17 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     @Override
     public User save(User user) {
         log.info("save {}", user);
+        if (user.isNew()) {
+            user.setId(counter.incrementAndGet());
+        }
         return userRepository.put(user.getId(), user);
+
     }
 
     @Override
     public User get(int id) {
         log.info("get {}", id);
+        ValidationUtil.checkNotFoundWithId(userRepository.get(id), id);
         return userRepository.get(id);
     }
 

@@ -91,4 +91,30 @@ public class User extends NamedEntity {
                 ", caloriesPerDay=" + caloriesPerDay +
                 ')';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (enabled != user.enabled) return false;
+        if (caloriesPerDay != user.caloriesPerDay) return false;
+        if (!email.equals(user.email)) return false;
+        if (!password.equals(user.password)) return false;
+        if (!registered.equals(user.registered)) return false;
+        return roles.equals(user.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = email.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + (enabled ? 1 : 0);
+        result = 31 * result + registered.hashCode();
+        result = 31 * result + roles.hashCode();
+        result = 31 * result + caloriesPerDay;
+        return result;
+    }
 }
