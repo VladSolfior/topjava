@@ -6,6 +6,7 @@ import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.repository.mock.InMemoryMealRepositoryImpl;
+import ru.javawebinar.topjava.util.ValidationUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
@@ -89,7 +90,6 @@ public class MealServiceImpl implements MealService {
             throw new NotFoundException("Meal with id: " + meal.getId() + "not exist");
         }
         return repository.save(meal, userId);
-
     }
 
     @Override
