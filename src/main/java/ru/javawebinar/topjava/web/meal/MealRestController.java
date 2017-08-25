@@ -25,7 +25,6 @@ public class MealRestController {
     }
 
     public Meal create(Meal meal) {
-
         return service.save(meal, AuthorizedUser.id());
     }
 
