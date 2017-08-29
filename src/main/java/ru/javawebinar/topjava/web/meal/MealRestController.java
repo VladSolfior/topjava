@@ -1,5 +1,7 @@
 package ru.javawebinar.topjava.web.meal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import ru.javawebinar.topjava.AuthorizedUser;
@@ -17,6 +19,8 @@ import java.util.stream.Collectors;
 @Controller
 public class MealRestController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(MealRestController.class);
+
     @Autowired
     private MealService service;
 
@@ -33,6 +37,7 @@ public class MealRestController {
     }
 
     public List<MealWithExceed> getAll() {
+        LOG.debug("get from rest controller all meals by user with id: {}", AuthorizedUser.id());
         return MealsUtil.getWithExceeded(
                 service.getAll(
                         AuthorizedUser.id()),
@@ -72,6 +77,11 @@ public class MealRestController {
             throw new NotFoundException("meal with id " + id + " not found");
         }
         service.update(meal, userId);
+    }
+
+    public void save(Meal meal) {
+        int userId = AuthorizedUser.id();
+        service.save(meal, userId);
     }
 
 }
