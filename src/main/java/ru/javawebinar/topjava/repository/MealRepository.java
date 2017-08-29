@@ -9,6 +9,7 @@ import java.util.List;
 public interface MealRepository {
     Meal save(Meal Meal, int userId);
 
+    /* Spring repository get SQL count { with id} */
     boolean delete(int id, int userId);
 
     Meal get(int id, int userId);

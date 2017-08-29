@@ -6,7 +6,6 @@ import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.repository.mock.InMemoryMealRepositoryImpl;
-import ru.javawebinar.topjava.util.ValidationUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
@@ -62,6 +61,7 @@ public class MealServiceImpl implements MealService {
     @Override
     public void delete(int id, int userId) throws NotFoundException {
         checkOwner(userId);
+        /* Spring repository get SQL count { with id} */
         if (repository.get(id, userId) == null) {
             throw new NotFoundException("Meal with id: " + id + " not exist");
         }
